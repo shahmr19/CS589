@@ -52,7 +52,7 @@ def make_stratified_folds(X, y, k=5, seed=123):
     rng = np.random.default_rng(seed)
     label_to_ind = {}
     for label in y.unique():
-        idx = y[y == label].index.to_numpy()
+        idx = y[y == label].index.to_numpy().copy()
         rng.shuffle(idx)
         label_to_ind[label] = np.array_split(idx, k)
     folds = []
@@ -260,7 +260,7 @@ def metrics(y_true, y_pred):
         "f1": np.mean(f1_scores)
     }
 
-def evaluate(X, y, n_trees, k_folds=10, m_try=None, max_depth=10, min_split=5, min_gain=1e-9, seed=123):
+def evaluate(X, y, n_trees, k_folds=10, m_try=None, max_depth=5, min_split=5, min_gain=1e-9, seed=123):
     if m_try is None:
         m_try = max(1, int(math.sqrt(X.shape[1])))
     folds = make_stratified_folds(X, y, k=k_folds, seed=seed)
@@ -280,7 +280,7 @@ def evaluate(X, y, n_trees, k_folds=10, m_try=None, max_depth=10, min_split=5, m
 
     return result
 
-def experiments(dataset, X, y, ntree_vals, op_prefix, max_depth=10, min_split=5, min_gain=1e-9, seed=123):
+def experiments(dataset, X, y, ntree_vals, op_prefix, max_depth=5, min_split=5, min_gain=1e-9, seed=123):
     results = {
         "accuracy":[],
         "f1": []
@@ -305,9 +305,9 @@ def experiments(dataset, X, y, ntree_vals, op_prefix, max_depth=10, min_split=5,
     return results        
 
 def main():
-    ntree_vals = [1, 5, 10, 20, 30, 40, 50]
+    ntree_vals = [1, 2, 3, 5, 7, 10]
 
-    max_depth = 10
+    max_depth = 5
     min_split = 5
     min_gain = 1e-9
 

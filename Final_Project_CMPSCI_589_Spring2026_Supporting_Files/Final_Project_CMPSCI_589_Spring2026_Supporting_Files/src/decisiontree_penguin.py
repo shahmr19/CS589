@@ -55,7 +55,7 @@ def make_stratified_folds(X, y, k=5, seed=123):
     rng = np.random.default_rng(seed)
     label_to_ind = {}
     for label in y.unique():
-        idx = y[y == label].index.to_numpy()
+        idx = y[y == label].index.to_numpy().copy()
         rng.shuffle(idx)
         label_to_ind[label] = np.array_split(idx, k)
     folds = []

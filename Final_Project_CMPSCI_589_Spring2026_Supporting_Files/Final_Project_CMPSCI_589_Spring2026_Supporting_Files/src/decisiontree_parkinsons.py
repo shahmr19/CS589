@@ -41,7 +41,7 @@ def make_stratified_folds(X, y, k=5, seed=123):
     rng = np.random.default_rng(seed)
     label_to_ind = {}
     for label in y.unique():
-        idx = y[y == label].index.to_numpy()
+        idx = y[y == label].index.to_numpy().copy()
         rng.shuffle(idx)
         label_to_ind[label] = np.array_split(idx, k)
     folds = []
@@ -283,7 +283,7 @@ def experiments(dataset, X, y, ntree_vals, op_prefix, max_depth=10, min_split=5,
         metrics = evaluate(X, y, n_trees=n_trees, k_folds=10, m_try=m_try, max_depth=max_depth, min_split=min_split, min_gain=min_gain, seed=seed)
         for key in results:
             results[key].append(metrics[key])
-    for metric in ["accuracy", "precision", "recall", "f1"]:
+    for metric in ["accuracy", "f1"]:
         plt.figure()
         plt.plot(ntree_vals, results[metric], marker="o")
         plt.xlabel("ntree")

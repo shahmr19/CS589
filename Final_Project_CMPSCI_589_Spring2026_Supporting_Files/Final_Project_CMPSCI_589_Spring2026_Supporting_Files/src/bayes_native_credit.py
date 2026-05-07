@@ -2,11 +2,15 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import StratifiedKFold
 import matplotlib.pyplot as plt
+import os
 
 def load_credit():
-    df = pd.read_csv("../credit.csv")
 
-    # Convert categorical feature columns into numeric codes
+    current_dir = os.path.dirname(__file__)
+    file_path = os.path.join(current_dir, "..", "credit_approval.csv")
+
+    df = pd.read_csv(file_path)
+
     for col in df.columns:
         if "_cat" in col:
             df[col] = pd.factorize(df[col])[0]
